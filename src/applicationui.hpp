@@ -26,6 +26,7 @@ public:
 	}
 public:
 	Q_INVOKABLE void copyText(QString text);
+	Q_INVOKABLE QString getText();
 private slots:
 	void onSystemLanguageChanged();
 private:

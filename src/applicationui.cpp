@@ -27,11 +27,10 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     // Create scene document from main.qml asset, the parent is set
     // to ensure the document gets destroyed properly at shut down.
     QmlDocument *qml = QmlDocument::create("asset:///main.qml").parent(this);
+    qml->setContextProperty("_app", this);
 
     // Create root object for the UI
     AbstractPane *root = qml->createRootObject<AbstractPane>();
-    qml->setContextProperty("_app", this);
-	virtualkeyboard_request_events(0);
 
     // Set created root object as the application scene
     app->setScene(root);
@@ -53,4 +52,11 @@ void ApplicationUI::copyText(QString txt)
 	bb::system::Clipboard clip;
 	clip.clear();
 	clip.insert("text/plain", txt.toUtf8());
+}
+
+QString ApplicationUI::getText()
+{
+	bb::system::Clipboard clip;
+	QByteArray ba = clip.value("text/plain");
+	return QString::fromUtf8(ba.data(), ba.length());
 }
